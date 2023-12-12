@@ -3,7 +3,7 @@ import { data } from "./data";
 
 function Team() {
   const [doctor, setDoctor] = useState(0);
-  const { id, name, position, about, image } = data[doctor];
+  const { name, position, about, image } = data[doctor];
 
   const previousDoctor = () => {
     setDoctor((doctor) => {

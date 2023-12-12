@@ -24,7 +24,11 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           
-          <Route path='/services' element={<Services services={services} doctors={doctors}/>} />
+          <Route path='/services' element={<Services services={services} 
+          doctors={doctors}
+          setDoctors={setDoctors}
+          setServices={setServices}
+          />} />
           <Route path='/appointment' element={<Appointment />} />
           <Route path='/team' element={<Team />} />
           <Route path='/contact' element={<Contact />} />
