@@ -1,33 +1,40 @@
 import { useState } from "react";
 
 function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
 
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        message: ''
+  const [submissionMessage, setSubmissionMessage] = useState(''); // State for submission message
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    try {
+      // Here, you would typically send formData to the server
+      console.log(formData);
+
+      // Simulating a successful submission
+      alert("Thank you! Your message has been sent.");
+
+      // Clear the form after successful submission
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
       });
-
-      const handleChange = (e) => {
-        setFormData({
-          ...formData,
-          [e.target.name]: e.target.value
-        });
-      };
-      
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        // Здесь вы можете обработать данные формы, например, отправить их на сервер
-        console.log(formData);
-        // Очистить форму после отправки
-        setFormData({
-          name: '',
-          email: '',
-          message: ''
-        });
-      };
-    
-
+    } catch (error) {
+      // Handle any errors that occur during submission
+      alert("An error occurred. Please try again later.");
+    }
+  };
 
   return (
     <div>
@@ -81,44 +88,53 @@ function Contact() {
 
       <div>
         <h3>Feedback</h3>
-        <p>We value your feedback and are always looking to improve our services. If you have any suggestions or comments, please fill out our feedback form or write to us at our email address.</p>
+        <p>
+          We value your feedback and are always looking to improve our services.
+          If you have any suggestions or comments, please fill out our feedback
+          form or write to us at our email address.
+        </p>
       </div>
 
       <form onSubmit={handleSubmit}>
-      <h2>Contact Us</h2>
+        <h2>Contact Us</h2>
 
-      <label htmlFor="name">Name:</label><br />
-      <input 
-        type="text" 
-        id="name" 
-        name="name" 
-        value={formData.name} 
-        onChange={handleChange} 
-        required 
-      /><br />
+        <label htmlFor="name">Name:</label>
+        <br />
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
+        <br />
 
-      <label htmlFor="email">Email:</label><br />
-      <input 
-        type="email" 
-        id="email" 
-        name="email" 
-        value={formData.email} 
-        onChange={handleChange} 
-        required 
-      /><br />
+        <label htmlFor="email">Email:</label>
+        <br />
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <br />
 
-      <label htmlFor="message">Message:</label><br />
-      <textarea 
-        id="message" 
-        name="message" 
-        value={formData.message} 
-        onChange={handleChange} 
-        required 
-      /><br />
+        <label htmlFor="message">Message:</label>
+        <br />
+        <textarea
+          id="message"
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          required
+        />
+        <br />
 
-      <button type="submit">Send</button>
-    </form>
-
+        <button type="submit">Send</button>
+      </form>
     </div>
   );
 }

@@ -89,5 +89,8 @@ gap: 1rem;
   color: #61dafb;
 }
 
-
+.otherSymptoms {
+  display: flex;
+  flex-direction: column;
+}
 

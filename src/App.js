@@ -16,6 +16,7 @@ import LogIn from './LogIn';
 function App() {
   const [services, setServices] = useState(dataService);
   const [doctors, setDoctors] = useState(data);
+  const clinicEmail = "appointments@futuremed.com";
 
   return (
     <div className="App">
@@ -29,7 +30,7 @@ function App() {
           setDoctors={setDoctors}
           setServices={setServices}
           />} />
-          <Route path='/appointment' element={<Appointment />} />
+          <Route path='/appointment' element={<Appointment doctors={doctors} clinicEmail={clinicEmail}/>} />
           <Route path='/team' element={<Team />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/myaccount' element={<MyAccount />} />
