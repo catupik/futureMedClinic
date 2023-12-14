@@ -6,7 +6,7 @@ function Contact() {
     email: "",
     message: "",
   });
-
+// eslint-disable-next-line no-unused-vars
   const [submissionMessage, setSubmissionMessage] = useState(''); // State for submission message
   const handleChange = (e) => {
     setFormData({

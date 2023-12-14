@@ -137,9 +137,7 @@ function Appointment({ doctors, clinicEmail }) {
     setAttachment(event.target.files[0]);
   };
 
-  const handleAdditionalInfoChange = (event) => {
-    setAdditionalInfo(event.target.value);
-  };
+  
   const handleSymptomChange = (event) => {
     const { name, value, type, checked } = event.target;
     setSymptoms((prevSymptoms) => ({
