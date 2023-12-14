@@ -30,7 +30,7 @@ function App() {
           setDoctors={setDoctors}
           setServices={setServices}
           />} />
-          <Route path='/appointment' element={<Appointment doctors={doctors} clinicEmail={clinicEmail}/>} />
+          <Route path='/appointment' element={<Appointment doctors={doctors} clinicEmail={clinicEmail} services={services}/>} />
           <Route path='/team' element={<Team />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/myaccount' element={<MyAccount />} />

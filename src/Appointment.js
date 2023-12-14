@@ -3,13 +3,15 @@ import { useLocation } from 'react-router-dom';
 import { useEffect } from "react";
 import "./App.css";
 import DoctorSelector from "./DoctorSelector";
+import ServiceSelector from "./ServiceSelector";
 
-function Appointment({ doctors, clinicEmail }) {
+function Appointment({ doctors, clinicEmail, services }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [doctorName, setDoctorName] = useState("");
+  const [selectedService, setSelectedService] = useState("");
   const [appointmentType, setAppointmentType] = useState("");
   const [attachment, setAttachment] = useState(null);
   const [additionalInfo, setAdditionalInfo] = useState("");
@@ -61,6 +63,8 @@ function Appointment({ doctors, clinicEmail }) {
     const selectedDoctor = doctors.find(
         (doctor) => doctor.name === doctorName
       );
+    
+    
       
 
     const appointmentDetails = {
@@ -71,6 +75,7 @@ function Appointment({ doctors, clinicEmail }) {
       doctorName: selectedDoctor ? selectedDoctor.name : null,
       doctorEmail: selectedDoctor ? selectedDoctor.email : null,
       clinicEmail,
+      selectedService: selectedService, 
       appointmentType,
       attachment: attachment ? attachment.name : null,
       additionalInfo,
@@ -202,21 +207,7 @@ function Appointment({ doctors, clinicEmail }) {
           />
         </div>
         <DoctorSelector doctors={doctors} doctorName={doctorName} setDoctorName={setDoctorName} />
-        {/* <div>
-          <label htmlFor="doctor">Doctor:</label>
-          <select
-            id="doctor"
-            value={doctorId}
-            onChange={(e) => setDoctorId(e.target.value)}
-          >
-            <option value="">Select a Doctor</option>
-            {doctors.map((doctor) => (
-              <option key={doctor.id} value={doctor.id}>
-                {doctor.name} - {doctor.position}
-              </option>
-            ))}
-          </select>
-        </div> */}
+        <ServiceSelector services={services} selectedService={selectedService} setSelectedService={setSelectedService}/>
 
         <label>
           Appointment Type:
