@@ -10,8 +10,9 @@ function Services({ services, doctors }) {
   
 
   const handleAppointmentClick = () => {
-    navigate('/appointment');
-  };
+    navigate('/appointment', { state: { selectedDoctor } });
+  };  
+  
   
   const filteredServices = services.flatMap(serviceCategory => {
     // Фильтруем услуги внутри категории

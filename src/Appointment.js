@@ -1,5 +1,6 @@
 import { useState } from "react";
-import Survey from "./Survey";
+import { useLocation } from 'react-router-dom';
+import { useEffect } from "react";
 import "./App.css";
 import DoctorSelector from "./DoctorSelector";
 
@@ -8,7 +9,7 @@ function Appointment({ doctors, clinicEmail }) {
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [doctorId, setDoctorId] = useState("");
+  const [doctorName, setDoctorName] = useState("");
   const [appointmentType, setAppointmentType] = useState("");
   const [attachment, setAttachment] = useState(null);
   const [additionalInfo, setAdditionalInfo] = useState("");
@@ -36,6 +37,21 @@ function Appointment({ doctors, clinicEmail }) {
   const [allergies, setAllergies] = useState("");
   const [regularMedications, setRegularMedications] = useState("");
 
+
+
+  const location = useLocation();
+  const passedDoctor = location.state?.selectedDoctor;
+  
+  useEffect(() => {
+    if (passedDoctor) {
+      setDoctorName(passedDoctor);
+    }
+  }, [passedDoctor]);
+  
+
+  
+  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (time < "08:00" || time > "18:00") {
@@ -43,8 +59,9 @@ function Appointment({ doctors, clinicEmail }) {
       return;
     }
     const selectedDoctor = doctors.find(
-      (doctor) => doctor.id.toString() === doctorId
-    );
+        (doctor) => doctor.name === doctorName
+      );
+      
 
     const appointmentDetails = {
       patientName: name,
@@ -72,7 +89,7 @@ function Appointment({ doctors, clinicEmail }) {
         setEmail('');
         setDate('');
         setTime('');
-        setDoctorId('');
+        setDoctorName('');
         setAppointmentType('');
         setAttachment(null);
         setAdditionalInfo('');
@@ -186,7 +203,7 @@ function Appointment({ doctors, clinicEmail }) {
             onChange={(e) => setTime(e.target.value)}
           />
         </div>
-        <DoctorSelector doctors={doctors} doctorId={doctorId} setDoctorId={setDoctorId} />
+        <DoctorSelector doctors={doctors} doctorName={doctorName} setDoctorName={setDoctorName} />
         {/* <div>
           <label htmlFor="doctor">Doctor:</label>
           <select
