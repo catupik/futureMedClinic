@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import "./App.css";
 import DoctorSelector from "./DoctorSelector";
@@ -7,11 +7,14 @@ import ServiceSelector from "./ServiceSelector";
 
 function Appointment({ doctors, clinicEmail, services }) {
   const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [doctorName, setDoctorName] = useState("");
   const [selectedService, setSelectedService] = useState("");
+  const [filteredDoctors, setFilteredDoctors] = useState(doctors);
+  const [filteredServices, setFilteredServices] = useState([]);
   const [appointmentType, setAppointmentType] = useState("");
   const [attachment, setAttachment] = useState(null);
   const [additionalInfo, setAdditionalInfo] = useState("");
@@ -39,20 +42,55 @@ function Appointment({ doctors, clinicEmail, services }) {
   const [allergies, setAllergies] = useState("");
   const [regularMedications, setRegularMedications] = useState("");
 
-
-
   const location = useLocation();
   const passedDoctor = location.state?.selectedDoctor;
-  
+
   useEffect(() => {
     if (passedDoctor) {
       setDoctorName(passedDoctor);
     }
   }, [passedDoctor]);
-  
 
-  
-  
+  useEffect(() => {
+    if (selectedService) {
+      // Find the service category that includes the selected service
+      const serviceCategory = services.find((category) =>
+        category.services.some(
+          (service) => service.description === selectedService
+        )
+      );
+
+      if (serviceCategory) {
+        // Filter doctors based on the selected service
+        const relatedDoctors = doctors.filter((doctor) =>
+          serviceCategory.doctors.includes(doctor.name)
+        );
+        setFilteredDoctors(relatedDoctors);
+      } else {
+        // If no service is selected, show all doctors
+        setFilteredDoctors(doctors);
+      }
+    } else {
+      setFilteredDoctors(doctors);
+    }
+  }, [selectedService, services, doctors]);
+
+  useEffect(() => {
+    if (doctorName) {
+      // Filter services based on the selected doctor
+      const relatedServices = services.flatMap((serviceCategory) =>
+        serviceCategory.doctors.includes(doctorName)
+          ? serviceCategory.services
+          : []
+      );
+      setFilteredServices(relatedServices);
+    } else {
+      // Show all services if no doctor is selected
+      setFilteredServices(
+        services.flatMap((serviceCategory) => serviceCategory.services)
+      );
+    }
+  }, [doctorName, services]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -60,12 +98,7 @@ function Appointment({ doctors, clinicEmail, services }) {
       alert("Please select a time between 08:00 and 18:00.");
       return;
     }
-    const selectedDoctor = doctors.find(
-        (doctor) => doctor.name === doctorName
-      );
-    
-    
-      
+    const selectedDoctor = doctors.find((doctor) => doctor.name === doctorName);
 
     const appointmentDetails = {
       patientName: name,
@@ -75,7 +108,7 @@ function Appointment({ doctors, clinicEmail, services }) {
       doctorName: selectedDoctor ? selectedDoctor.name : null,
       doctorEmail: selectedDoctor ? selectedDoctor.email : null,
       clinicEmail,
-      selectedService: selectedService, 
+      selectedService: selectedService,
       appointmentType,
       attachment: attachment ? attachment.name : null,
       additionalInfo,
@@ -85,50 +118,47 @@ function Appointment({ doctors, clinicEmail, services }) {
     console.log("Appointment details:", appointmentDetails);
     // Например, отправка запроса к вашему API
     try {
-        // ...API call or form submission logic
-        // On successful submission:
-        alert('Appointment booked successfully!');
-    
-        // Resetting form fields
-        setName('');
-        setEmail('');
-        setDate('');
-        setTime('');
-        setDoctorName('');
-        setAppointmentType('');
-        setAttachment(null);
-        setAdditionalInfo('');
-        setSymptoms({
-          temperature: false,
-          throatPain: false,
-          backPain: false,
-          highBloodPressure: false,
-          headache: false,
-          weakness: false,
-          weightLoss: false,
-          lossOfAppetite: false,
-          enlargedLymphNodes: false,
-          abdominalPain: false,
-          bloating: false,
-          diarrheaOrConstipation: false,
-          visionImpairment: false,
-          other: "",
-        });
-        setSymptomStartDate('');
-        setMedicationsUsed('');
-        setMedicationEffectiveness('');
-        setCurrentDiseases('');
-        setInjuryDate('');
-        setAllergies('');
-        setRegularMedications('');
-    
-      } catch (error) {
-        // Handle errors
-        console.error('There was a problem with the fetch operation:', error);
-        alert('Failed to book the appointment.');
-      }
+      // ...API call or form submission logic
+      // On successful submission:
+      alert("Appointment booked successfully!");
 
-
+      // Resetting form fields
+      setName("");
+      setEmail("");
+      setDate("");
+      setTime("");
+      setDoctorName("");
+      setAppointmentType("");
+      setAttachment(null);
+      setAdditionalInfo("");
+      setSymptoms({
+        temperature: false,
+        throatPain: false,
+        backPain: false,
+        highBloodPressure: false,
+        headache: false,
+        weakness: false,
+        weightLoss: false,
+        lossOfAppetite: false,
+        enlargedLymphNodes: false,
+        abdominalPain: false,
+        bloating: false,
+        diarrheaOrConstipation: false,
+        visionImpairment: false,
+        other: "",
+      });
+      setSymptomStartDate("");
+      setMedicationsUsed("");
+      setMedicationEffectiveness("");
+      setCurrentDiseases("");
+      setInjuryDate("");
+      setAllergies("");
+      setRegularMedications("");
+    } catch (error) {
+      // Handle errors
+      console.error("There was a problem with the fetch operation:", error);
+      alert("Failed to book the appointment.");
+    }
   };
 
   const handleTypeChange = (event) => {
@@ -142,13 +172,29 @@ function Appointment({ doctors, clinicEmail, services }) {
     setAttachment(event.target.files[0]);
   };
 
-  
   const handleSymptomChange = (event) => {
     const { name, value, type, checked } = event.target;
     setSymptoms((prevSymptoms) => ({
       ...prevSymptoms,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const minDate = tomorrow.toISOString().split('T')[0];
+
+  const handleTimeChange = (e) => {
+    let selectedTime = e.target.value;
+    const [hours, minutes] = selectedTime.split(':').map(Number);
+
+    // Round to the nearest hour if minutes are not zero
+    if (minutes !== 0) {
+      selectedTime = `${String(hours).padStart(2, '0')}:00`;
+    }
+
+    setTime(selectedTime);
   };
 
   return (
@@ -175,6 +221,17 @@ function Appointment({ doctors, clinicEmail, services }) {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="surname">Surname:</label>
+          <input
+            type="text"
+            id="surname"
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -184,6 +241,7 @@ function Appointment({ doctors, clinicEmail, services }) {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -193,6 +251,8 @@ function Appointment({ doctors, clinicEmail, services }) {
             id="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
+            required
+            min={minDate}
           />
         </div>
         <div>
@@ -203,15 +263,25 @@ function Appointment({ doctors, clinicEmail, services }) {
             min="08:00"
             max="18:00"
             value={time}
-            onChange={(e) => setTime(e.target.value)}
+            onChange={handleTimeChange}
+            required
           />
         </div>
-        <DoctorSelector doctors={doctors} doctorName={doctorName} setDoctorName={setDoctorName} />
-        <ServiceSelector services={services} selectedService={selectedService} setSelectedService={setSelectedService}/>
-
+        <DoctorSelector
+          doctors={filteredDoctors}
+          doctorName={doctorName}
+          setDoctorName={setDoctorName}
+        />
+        {/* <DoctorSelector doctors={doctors} doctorName={doctorName} setDoctorName={setDoctorName} /> */}
+        {/* <ServiceSelector services={services} selectedService={selectedService} setSelectedService={setSelectedService}/> */}
+        <ServiceSelector
+          services={filteredServices}
+          selectedService={selectedService}
+          setSelectedService={setSelectedService}
+        />
         <label>
           Appointment Type:
-          <select value={appointmentType} onChange={handleTypeChange}>
+          <select value={appointmentType} onChange={handleTypeChange} required>
             <option value="">Select...</option>
             <option value="examination">Discuss Examination Results</option>
             <option value="complaint">Discuss Complaints or Illness</option>
