@@ -1,8 +1,10 @@
 import { useState } from "react";
+import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
 
 function LogIn() {
     const [isLogin, setIsLogin] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // State to track login status
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -50,30 +52,4 @@ function LogIn() {
   );
 }
   
-  function LoginForm({ handleLogin }) {
-    return (
-      <form onSubmit={handleLogin}>
-        <h2>Welcome Back to FutureMed Clinic!</h2>
-        <p>We're glad to see you again. Log in to your account to resume your personalized health experience.</p>
-        <input type="text" placeholder="Username" required />
-        <input type="password" placeholder="Password" required />
-        <button type="submit">Login</button>
-      </form>
-    );
-  }
-  
-  function RegisterForm({ handleRegister }) {
-    return (
-      <form onSubmit={handleRegister}>
-        <h2>Welcome to FutureMed Clinic!</h2>
-        <p>Join us in pioneering a healthier tomorrow. Registration is simple – just fill in your details.</p>
-        <input type="text" placeholder="Username" required />
-        <input type="email" placeholder="Email" required />
-        <input type="password" placeholder="Password" required />
-        <input type="password" placeholder="Confirm Password" required />
-        <button type="submit">Register</button>
-      </form>
-    );
-  }
-
 export default LogIn;
