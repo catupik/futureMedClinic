@@ -85,16 +85,7 @@ gap: 1rem;
   border-radius: 10%;
 }
 
-/* Display hamburger menu on small screens */
-@media screen and (max-width: 600px) {
-  .hamburger {
-    display: block;
-  }
 
-  nav {
-    display: none;
-  }
-}
 
 /* When menu is open */
 .nav-links.open {
@@ -206,7 +197,7 @@ form button:hover {
   text-decoration: none;
 }
 .nav-nav {
-  display: flex;
+  display: none;
   margin: 1rem;
 
 }
@@ -219,3 +210,17 @@ form button:hover {
   color: rgb(84, 162, 227);
 }
 
+/* Display hamburger menu on small screens */
+@media screen and (max-width: 600px) {
+  .hamburger {
+    display: block;
+  }
+
+  nav {
+    display: none;
+  }
+
+  .nav-nav {
+    display: flex;
+  }
+}
