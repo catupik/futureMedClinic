@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -36,8 +37,17 @@ function Contact() {
     }
   };
 
+  const navigate = useNavigate();
+
   return (
     <div>
+
+          <div className="nav-nav">
+            {/* eslint-disable-next-line */}
+            <a href="#" onClick={()=> navigate('/')}>Home/  </a>
+            <p >Contact</p>
+          </div>
+
       <h2>Contact us</h2>
       <h1>FutureMed Clinic</h1>
       <p>

@@ -9,8 +9,13 @@ function LoginForm({ handleLogin }) {
       <div className="input-login">
         <input type="text" placeholder="Username" required />
         <input type="password" placeholder="Password" required />
+        <a className="forgot" href="">
+          Forgot password?
+        </a>
       </div>
-      <button type="submit">Login</button>
+      
+        <button type="submit">Login</button>
+     
     </form>
   );
 }

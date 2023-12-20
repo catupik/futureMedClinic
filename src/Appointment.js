@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import "./App.css";
 import DoctorSelector from "./DoctorSelector";
@@ -44,6 +44,8 @@ function Appointment({ doctors, clinicEmail, services }) {
 
   const location = useLocation();
   const passedDoctor = location.state?.selectedDoctor;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (passedDoctor) {
@@ -199,6 +201,13 @@ function Appointment({ doctors, clinicEmail, services }) {
 
   return (
     <div>
+
+        <div className="nav-nav">
+         {/* eslint-disable-next-line */}
+            <a href="#" onClick={()=> navigate('/')}>Home/  </a>
+            <p >Appointment</p>
+          </div>
+
       <h2>Make an Appointment</h2>
 
       <p>

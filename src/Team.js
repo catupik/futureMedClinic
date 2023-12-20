@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { data } from "./data";
+import { useNavigate } from 'react-router-dom';
 
 function Team() {
   const [doctor, setDoctor] = useState(0);
   const { name, position, about, image } = data[doctor];
+
+  const navigate = useNavigate();
 
   const previousDoctor = () => {
     setDoctor((doctor) => {
@@ -26,6 +29,12 @@ function Team() {
   };
   return (
     <div>
+
+        <div className="nav-nav">
+          {/* eslint-disable-next-line */}
+            <a href="#" onClick={()=> navigate('/')}>Home/  </a>
+            <p >Team</p>
+          </div>
       <h1>Welcome to FutureMed Clinic</h1>
       <p>
         As the founding doctors of FutureMed Clinic, we are thrilled to welcome

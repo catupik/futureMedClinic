@@ -30,6 +30,12 @@ function Services({ services, doctors }) {
   return (
     <div>
 
+        <div className="nav-nav">
+          {/* eslint-disable-next-line */}
+            <a href="#" onClick={()=> navigate('/')}>Home/  </a>
+            <p >Services</p>
+          </div>
+
       <h1>Our Services</h1>
 
       <div>
