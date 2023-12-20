@@ -9,6 +9,7 @@ function LoginForm({ handleLogin }) {
       <div className="input-login">
         <input type="text" placeholder="Username" required />
         <input type="password" placeholder="Password" required />
+        {/* eslint-disable-next-line */}
         <a className="forgot" href="">
           Forgot password?
         </a>
