@@ -9,7 +9,8 @@ function LogIn() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [formKey, setFormKey] = useState(0);
+
+  
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -21,18 +22,23 @@ function LogIn() {
   const handleRegister = (event) => {
     event.preventDefault();
     
-    if (password !== confirmPassword){
-      setPassword('');
-      setConfirmPassword('');
-      setFormKey(oldKey => oldKey + 1);
-      alert('Passwords do not match');
-      
+    if (password === confirmPassword){
       console.log(password, confirmPassword)
-      return;
+      alert("Registration form submitted");
+
+    // Add registration logic here
+     
+    }else{
+      console.log(password, confirmPassword)
+      alert('Passwords do not match')
+      
+      setPassword('');
+      setConfirmPassword('')
+      
+      
     }
 
-    console.log("Registration form submitted");
-    // Add registration logic here
+    
   };
 
   const handleLogout = () => {
@@ -69,7 +75,7 @@ function LogIn() {
             {isLogin ? (
               <LoginForm handleLogin={handleLogin} />
             ) : (
-              <RegisterForm key={formKey} setPassword={setPassword} setConfirmPassword={setConfirmPassword} handleRegister={handleRegister} />
+              <RegisterForm setPassword={setPassword} setConfirmPassword={setConfirmPassword} handleRegister={handleRegister} />
             )}
           </div>
         </div>

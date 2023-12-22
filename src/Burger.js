@@ -1,13 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Burger({ isMenuOpen, toggleMenu, burgerIcon }) {
+
+  const [isBelowVideo, setIsBelowVideo] = useState(false)
 
   const handleClickOutside = (e) => {
     if (isMenuOpen && !e.target.closest('.hamburger')){
       toggleMenu();
     }
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const videoElement = document.querySelector('.mobile-video');
+      if (videoElement) {
+        const videoHeight = videoElement.offsetHeight;
+        setIsBelowVideo(window.scrollY > (videoHeight-50));
+      }
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   useEffect(()=> {
     document.addEventListener('mousedown', handleClickOutside);
@@ -19,7 +36,7 @@ function Burger({ isMenuOpen, toggleMenu, burgerIcon }) {
   return (
     <div className="hamburger">
       <img
-        className="burger"
+        className={`burger ${isBelowVideo ? 'black-burger' : ''}`}
         onClick={toggleMenu}
         src={burgerIcon}
         width="30"
