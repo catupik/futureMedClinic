@@ -1,17 +1,23 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 function RegisterForm({ setPassword, handleRegister, setConfirmPassword }) {
+  const usernameRef = useRef();
+  const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
-  const [showPassword, setShowPassword] = useState(false);
+  const [generatedPassword, setGeneratedPassword] = useState('');
 
+  const clearForm = () => {
+    // Resetting state
+    setGeneratedPassword('');
+    setPassword('');
+    setConfirmPassword('');
 
-  useEffect(()=>{
-    generateRandomPassword();
-  }, []);
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    // Resetting form fields
+    usernameRef.current.value = '';
+    emailRef.current.value = '';
+    passwordRef.current.value = '';
+    confirmPasswordRef.current.value = '';
   };
 
   const generateRandomPassword = async () => {
@@ -25,17 +31,15 @@ function RegisterForm({ setPassword, handleRegister, setConfirmPassword }) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      const randomPassword = data.password;
-      passwordRef.current.value = randomPassword;
-      confirmPasswordRef.current.value = randomPassword;
-      setPassword(randomPassword);
-      setConfirmPassword(randomPassword);
+       const randomPassword = data.random_password
+      console.log(randomPassword)
+      setGeneratedPassword(randomPassword);
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
-  const handleRegisterLocal = (e) => {
+  const handleRegisterLocal =  (e) => {
     e.preventDefault();
     if (passwordRef.current.value !== confirmPasswordRef.current.value) {
       alert("Passwords do not match");
@@ -45,6 +49,7 @@ function RegisterForm({ setPassword, handleRegister, setConfirmPassword }) {
       setConfirmPassword("");
     } else {
       handleRegister(e);
+      clearForm();
     }
   };
 
@@ -56,27 +61,31 @@ function RegisterForm({ setPassword, handleRegister, setConfirmPassword }) {
         just fill in your details.
       </p>
       <div className="input-register">
-        <input type="text" placeholder="Username" required />
-        <input type="email" placeholder="Email" required />
+        <input type="text" placeholder="Username" required 
+        ref={usernameRef}/>
+        <input type="email" placeholder="Email" required 
+        ref={emailRef}/>
         <input
-          type={showPassword ? "text" : "password"}
+          type="password"
           placeholder="Password"
           required
           onChange={(e) => setPassword(e.target.value)}
           ref={passwordRef}
         />
         <input
-          type={showPassword ? "text" : "password"}
+          type="password"
           placeholder="Confirm Password"
           required
           onChange={(e) => setConfirmPassword(e.target.value)}
           ref={confirmPasswordRef}
         />
       </div>
-      <button type="button" onClick={togglePasswordVisibility}>
-        {showPassword ? "Hide Password" : "Show Password"}
-      </button>
-      <button type="button" onClick={generateRandomPassword}>Generate Password</button>
+      <button type="button" onClick={generateRandomPassword}>Generate Random Password</button>
+      {generatedPassword && (
+        <div>
+          <strong>Generated Password:</strong> {generatedPassword}
+        </div>
+      )}
       <button type="submit">Register</button>
     </form>
   );
