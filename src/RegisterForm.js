@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-function RegisterForm({ setPassword, handleRegister, setConfirmPassword }) {
+function RegisterForm({ setPassword, handleRegister, setConfirmPassword, onSuccessfulRegistration}) {
   const usernameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -49,6 +49,7 @@ function RegisterForm({ setPassword, handleRegister, setConfirmPassword }) {
       setConfirmPassword("");
     } else {
       handleRegister(e);
+      onSuccessfulRegistration(usernameRef.current.value, passwordRef.current.value)
       clearForm();
     }
   };

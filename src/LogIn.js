@@ -8,7 +8,9 @@ function LogIn() {
     const [isLogin, setIsLogin] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
   const [password, setPassword] = useState('');
+  const [userName, setUsername] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
   
 
@@ -33,13 +35,15 @@ function LogIn() {
       alert('Passwords do not match')
       
       setPassword('');
-      setConfirmPassword('')
-      
-      
+      setConfirmPassword('')     
     }
-
-    
   };
+  const handleSuccessfulRegistration = (userName, password) => {
+    setUsername(userName);
+    setPassword(password);
+    console.log(userName, password);
+    setIsLogin(true);
+  }
 
   const handleLogout = () => {
     console.log("Logout");
@@ -47,7 +51,7 @@ function LogIn() {
     // Add logout logic here, like clearing user data or tokens
   };
 
-  const navigate = useNavigate();
+  
 
 
   return (
@@ -73,9 +77,16 @@ function LogIn() {
           </div>
           <div className="auth-content">
             {isLogin ? (
-              <LoginForm handleLogin={handleLogin} />
+              <LoginForm 
+              handleLogin={handleLogin} 
+              userName={userName}
+              password={password}/>
             ) : (
-              <RegisterForm setPassword={setPassword} setConfirmPassword={setConfirmPassword} handleRegister={handleRegister} />
+              <RegisterForm 
+                setPassword={setPassword} 
+                setConfirmPassword={setConfirmPassword} 
+                handleRegister={handleRegister}
+                onSuccessfulRegistration={handleSuccessfulRegistration} />
             )}
           </div>
         </div>
